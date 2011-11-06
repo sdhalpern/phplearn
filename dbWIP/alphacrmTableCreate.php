@@ -59,10 +59,20 @@ if ($dbSuccess) {
 				if (mysql_query($createCoyTable_SQL))  {	
 					echo "'Create TABLE tCompany' -  Successful.<br /><br />";
 				} 
-	
-			
-}
 
+				//   SQL script to create table tPerson 
+				$createPersonTable_SQL = "CREATE TABLE alphacrm.tPerson ( ";
+				$createPersonTable_SQL .= "ID INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY , ";
+				$createPersonTable_SQL .= "Salutation VARCHAR( 20 ) , ";
+				$createPersonTable_SQL .= "FirstName VARCHAR( 50 ) , ";
+				$createPersonTable_SQL .= "LastName VARCHAR( 50 ) NOT NULL, ";
+				$createPersonTable_SQL .= "CompanyID INT ( 11 ) NOT NULL ";
+				$createPersonTable_SQL .= ")";
+	
+				if (mysql_query($createPersonTable_SQL))  {	
+					echo "'Create TABLE tPerson' -  Successful.<br /><br />";
+				} 	
+			
 }
 
 ?>
