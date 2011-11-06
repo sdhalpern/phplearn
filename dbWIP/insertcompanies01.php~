@@ -1,0 +1,48 @@
+<?php
+/*
+
+*	File:		insertcompanies01.php
+*	By:			TMIT
+*	Date:		11-06-2011
+*
+*	This script inserts company details into the table tCompany
+*
+*insertcompanies01.php
+*=====================================
+*/
+
+
+{ // Connect and Test MySQL and specific DB (return $dbSuccess = T/F)
+				
+			$hostname = "localhost";
+			$username = "root";
+			$password = "element";
+			
+			$databaseName = "alphacrm";
+
+			$dbConnected = @mysql_connect($hostname, $username, $password);
+			$dbSelected = @mysql_select_db($databaseName,$dbConnected);
+
+			$dbSuccess = true;
+			if ($dbConnected) {
+				if (!$dbSelected) {
+					echo "DB connection FAILED<br /><br />";
+					$dbSuccess = false;
+				}		
+			} else {
+				echo "MySQL connection FAILED<br /><br />";
+				$dbSuccess = false;
+			}
+}  
+
+//	 Execute code ONLY if connections were successful 	
+if ($dbSuccess) {
+	
+		
+			
+}
+
+
+
+
+?>
