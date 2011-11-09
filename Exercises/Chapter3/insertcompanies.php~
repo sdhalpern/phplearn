@@ -1,0 +1,125 @@
+<?php
+/*
+
+*	File:		insertcompanies.php
+*	By:			Seth Halpern
+*	Date:		11-10-11
+*
+*	This script inserts company details into the table tCompany
+*
+*insertcompanies01.php
+*=====================================
+*/
+
+{ // Connect and Test MySQL and specific DB (return $dbSuccess = T/F)
+				
+			$hostname = "localhost";
+			$username = "root";
+			$password = "element";
+			
+			$databaseName = "alphacrm";
+
+			$dbConnected = @mysql_connect($hostname, $username, $password);
+			$dbSelected = @mysql_select_db($databaseName,$dbConnected);
+
+			$dbSuccess = true;
+			if ($dbConnected) {
+				if (!$dbSelected) {
+					echo "DB connection FAILED<br /><br />";
+					$dbSuccess = false;
+				}		
+			} else {
+				echo "MySQL connection FAILED<br /><br />";
+				$dbSuccess = false;
+			}
+			
+			//	 Execute code ONLY if connections were successful 	
+if ($dbSuccess) {
+	
+	{	//	setup ARRAY of field names 
+		$companyField = array(
+					'Name' => 'Name',
+					'StreetA' => 'StreetA',
+					'Town' => 'Town',
+					'Postcode' => 'Postcode',	
+					'COUNTRY' => 'COUNTRY',		
+		);
+	}
+	
+	{	// setup ARRAY of data ROWS
+
+			//		read CSV data file
+	
+			$file = fopen("companyDetails", "r");					//		open the file 'datafile' for 'r'eading 		
+			$i = 0;
+			while(!feof($file))									//		while NOT the End Of File 
+			  {		  	
+				$thisLine = fgets($file);						//		gets the next line from 'datafile'				
+				$companyData[$i] = explode(",", $thisLine);//    sets 
+																		//		$personData[$i] = array( $thisLine );
+																		//		whatever's in $thisline separated by commas .
+				$i++;  												//		increment $i 
+			  }
+			fclose($file); 										//		close the file 
+			
+			$numRows = sizeof($companyData);
+
+		
+	}	
+
+		
+	{	//	SQL statement with ARRAYS 
+		
+		//   Fieldnames part of INSERT statement 
+		$company_SQLinsert = "INSERT INTO tCompany (
+									".$companyField['Name'].",
+									".$companyField['StreetA'].",
+									".$companyField['Town'].",
+									".$companyField['Postcode'].",
+									".$companyField['COUNTRY'].",								
+									) ";
+								
+		//   VALUES  part of INSERT statement 									
+		$company_SQLinsert .=  "VALUES ";			
+		
+
+
+		$indx = 0;		
+		while($indx < $numRows) {			
+			$company_SQLinsert .=  "(
+										'".$companyData[$indx][0]."',
+										'".$companyData[$indx][1]."',
+										'".$companyData[$indx][2]."',
+										'".$companyData[$indx][3]."',
+										'".$companyData[$indx][4]."'
+										) ";
+			if ($indx < ($numRows - 1)) {
+				$company_SQLinsert .=  ",";
+			}
+			
+			$indx++;
+		}
+	
+	
+	
+	}
+		
+			
+		
+	{	//	Echo and Execute the SQL and test for success   
+		
+		echo "<strong><u>SQL:<br /></u></strong>";
+		echo $company_SQLinsert."<br /><br />";
+			
+		if (mysql_query($company_SQLinsert))  {				
+			echo "was SUCCESSFUL.<br /><br />";
+		} else {
+			echo "FAILED.<br /><br />";		
+		}
+
+	}
+			
+}	//		END ($dbSuccess)
+
+}
+?>  
